@@ -2,9 +2,10 @@
 
 namespace Tygh\Addons\MultiStoreSeo;
 
+use Tygh\Registry;
+use Tygh\Settings;
 use Tygh\Tools\Url;
 use Tygh\Tygh;
-use Tygh\Registry;
 
 /**
  * Class AlternativeUrlFinder
@@ -16,11 +17,11 @@ class AlternativeUrlFinder
     /** @var array all currently active languages for each storefront */
     private static $languages = [];
 
-    /** @var array|string where each storefront is located */
-    private static $zones = [];
-
     /** @var array|string which dispatch matches which shared object */
     private static $objects = [];
+
+    /** @var int holds the default company id for languages */
+    private $default_company_id;
 
     /**
      * AlternativeUrlFinder constructor.
@@ -29,7 +30,7 @@ class AlternativeUrlFinder
     {
         $this->getLanguages();
         self::$objects = fn_get_schema('mseo', 'objects');
-        self::$zones = fn_get_schema('mseo', 'zones');
+        $this->default_company_id = Registry::get('addons.multistore_seo.default_storefront_id');
     }
 
     /**
@@ -75,8 +76,8 @@ class AlternativeUrlFinder
             }
 
             // If it is shared, then we generate an alternative language tag
-            if ($is_shared)
-                $alternates[$this->getLanguageIsoCode($language, $language['share_company_id'])] = [
+            if ($is_shared && ($iso_code = $this->getLanguageIsoCode($language, $language['share_company_id'])))
+                $alternates[$iso_code] = [
                     'name' => $language['name'],
                     'direction' => 'ltr',
                     'href' => fn_url($url->setQueryParams($query_params)->build())
@@ -96,11 +97,16 @@ class AlternativeUrlFinder
      */
     private function getLanguageIsoCode($language, $company_id)
     {
-        if (self::$zones[$company_id] ?? false) {
-            return sprintf("%s-%s", $language['lang_code'], self::$zones[$company_id]);
-        } else {
-            return $language['lang_code'];
-        }
+        static $default_languages = [];
+
+        if (!isset($default_languages[$company_id]))
+            $default_languages[$company_id] = strtolower(
+                Settings::instance()->getValue('default_country', 'Checkout', $company_id)
+            );
+
+        return ($company_id === $this->default_company_id)
+            ? $language['lang_code']
+            : sprintf("%s-%s", $language['lang_code'], $default_languages[$company_id]);
     }
 
     /**

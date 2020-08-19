@@ -10,6 +10,21 @@
     <supplier>Best Brands</supplier>
     <supplier_link>https://github.com/best-brands</supplier_link>
     <default_language>en</default_language>
+
+    <settings>
+        <sections>
+            <section id="general">
+                <items>
+                    <item id="default_storefront_id">
+                        <name>Default storefront</name>
+                        <type>input</type>
+                        <default_value/>
+                    </item>
+                </items>
+            </section>
+        </sections>
+    </settings>
+
     <authors>
         <author>
             <name>Harm Smits</name>
