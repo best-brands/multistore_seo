@@ -9,7 +9,7 @@ use Tygh\Core\HookHandlerProviderInterface;
 /**
  * Class Bootstrap
  *
- * @package Tygh\Addons\RoofCarriers
+ * @package Tygh\Addons\MultiStoreSeo
  */
 class Bootstrap implements BootstrapInterface, HookHandlerProviderInterface
 {

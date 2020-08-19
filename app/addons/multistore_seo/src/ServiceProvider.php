@@ -2,6 +2,11 @@
 
 namespace Tygh\Addons\MultiStoreSeo;
 
+/**
+ * Class ServiceProvider
+ *
+ * @package Tygh\Addons\MultiStoreSeo
+ */
 class ServiceProvider implements \Pimple\ServiceProviderInterface
 {
     public function register(\Pimple\Container $pimple)
