@@ -18,6 +18,9 @@ class Bootstrap implements BootstrapInterface, HookHandlerProviderInterface
     /** @var ApplicationInterface */
     protected $app;
 
+    /**
+     * @inheritDoc
+     */
     public function boot(ApplicationInterface $app)
     {
         $this->app = &$app;

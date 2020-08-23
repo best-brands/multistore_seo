@@ -28,7 +28,7 @@ class AlternativeUrlFinder
      */
     public function __construct()
     {
-        $this->getLanguages();
+        self::$languages = Tygh::$app['addons.multistore_seo.cache']->getLanguages();
         self::$objects = fn_get_schema('mseo', 'objects');
         $this->default_company_id = Registry::get('addons.multistore_seo.default_storefront_id');
     }
